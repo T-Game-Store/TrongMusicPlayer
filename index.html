@@ -222,7 +222,7 @@
     }
 
     #albumArt {
-      margin-top: -242px;
+      margin-top: -230px;
       width: 250px;
       height: 250px;
       border-radius: 50%;
@@ -945,6 +945,177 @@
       background-color: #c82333;
       box-shadow: 0 0 25px var(--confirm-btn-cancel);
     }
+
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      #songTitle {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+
+      .file-input-label {
+        padding: 10px 20px;
+        font-size: 1rem;
+      }
+
+      #lyrics {
+        height: 200px;
+        font-size: 1.1rem;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      #albumArt {
+        margin-top: 20px;
+        /* Adjust margin for mobile */
+        width: 200px;
+        height: 200px;
+      }
+
+      .controls {
+        margin-top: 30px;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+      }
+
+      .controls button {
+        width: 80%;
+        margin: 0 auto;
+        padding: 12px 20px;
+        font-size: 1rem;
+      }
+
+      .speed-controls {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .speed-controls button {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+      }
+
+      .seek-bar-container {
+        margin-top: 20px;
+        width: 95%;
+      }
+
+      .time-display {
+        font-size: 1rem;
+      }
+
+      #playlist-management-container {
+        position: relative;
+        /* Change to relative for mobile layout */
+        top: auto;
+        left: auto;
+        width: 100%;
+        margin-top: 40px;
+        /* Add margin to separate from controls */
+        align-items: center;
+      }
+
+      #playlists-area {
+        width: 95%;
+        align-items: center;
+      }
+
+      #playlist-controls {
+        width: 90%;
+        justify-content: center;
+      }
+
+      #playlists-list {
+        width: 90%;
+        max-height: 250px;
+      }
+
+      .playlist-item {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+
+      #current-playlist {
+        position: relative;
+        /* Change to relative for mobile layout */
+        left: auto;
+        top: auto;
+        width: 95%;
+        max-width: 95%;
+        margin-top: 20px;
+        /* Add margin to separate from playlists */
+      }
+
+      #current-playlist h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      #playlist-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      #playlist-actions button {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 0.9rem;
+        padding: 10px 15px;
+      }
+
+      #playlist-songs li {
+        font-size: 1rem;
+        padding: 8px 12px;
+      }
+
+      #playlist-songs li .remove-song-btn {
+        font-size: 0.9rem;
+      }
+
+      #playlist-playback-modes {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      #playlist-playback-modes button {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+      }
+
+      .modal-content {
+        width: 90%;
+        padding: 25px;
+      }
+
+      .modal-content h3 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+      }
+
+      .modal-content input[type="text"] {
+        padding: 12px;
+        font-size: 1rem;
+      }
+
+      .modal-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .modal-buttons button {
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px 20px;
+        font-size: 1rem;
+      }
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -967,7 +1138,7 @@
           <span class="icon">➕</span> Thêm nhạc vào DS
         </button>
       </div>
-     
+
       <ul id="playlist-songs">
       </ul>
     </div>
@@ -1043,7 +1214,7 @@
     </div>
   </div>
 
- <script>
+  <script>
     const seekBar = document.getElementById("seekBar");
     const currentTimeSpan = document.getElementById("currentTime");
     const durationSpan = document.getElementById("duration");
@@ -1082,11 +1253,11 @@
     let lrcLoaded = false;
     let isCountingDown = false;
 
-    let playlists = {}; 
-    let activePlaylistName = null; 
+    let playlists = {};
+    let activePlaylistName = null;
     let currentPlaylistSongs = [];
     let currentSongIndex = -1;
-    let playbackMode = 'normal'; 
+    let playbackMode = 'normal';
     let shuffledIndexes = [];
 
 
@@ -1272,9 +1443,9 @@
 
         activePlaylistName = null;
         currentPlaylistDiv.classList.remove('show');
-        renderPlaylists(); 
-        updateCurrentPlaylistDisplay(); 
-        playAudio(); 
+        renderPlaylists();
+        updateCurrentPlaylistDisplay();
+        playAudio();
       }
     });
 
@@ -1367,7 +1538,7 @@
         } else if (audioLoaded && audio.paused) {
           albumArtDiv.classList.remove("playing");
         } else if (!audioLoaded) {
-            albumArtDiv.classList.remove("show");
+          albumArtDiv.classList.remove("show");
         }
         return;
       } else {
@@ -1411,11 +1582,11 @@
 
       if (activePlaylistName && currentPlaylistSongs.length > 0) {
         playNextSongInPlaylist();
-      } else { 
-        audioLoaded = false; 
-        checkAndShowControls(); 
-        if (!lrcLoaded) { 
-            albumArtDiv.classList.remove("show");
+      } else {
+        audioLoaded = false;
+        checkAndShowControls();
+        if (!lrcLoaded) {
+          albumArtDiv.classList.remove("show");
         }
       }
     });
@@ -1430,37 +1601,37 @@
 
 
       if (audio.paused || audio.currentTime === 0) {
-          isCountingDown = true;
-          let count = 3;
+        isCountingDown = true;
+        let count = 3;
 
-          countdownOverlay.classList.add("show");
+        countdownOverlay.classList.add("show");
 
-          const startCountdown = (num) => {
-              countdownNumber.textContent = num;
-              countdownNumber.style.animation = 'none';
-              void countdownNumber.offsetWidth;
-              countdownNumber.style.animation = 'countdownPop 1s ease-out forwards';
-          };
+        const startCountdown = (num) => {
+          countdownNumber.textContent = num;
+          countdownNumber.style.animation = 'none';
+          void countdownNumber.offsetWidth;
+          countdownNumber.style.animation = 'countdownPop 1s ease-out forwards';
+        };
 
-          startCountdown(count);
-          audio.pause(); 
+        startCountdown(count);
+        audio.pause();
 
-          const countdownInterval = setInterval(() => {
-              count--;
-              if (count > 0) {
-                  startCountdown(count);
-              } else if (count === 0) {
-                  startCountdown("GO!");
-              } else {
-                  clearInterval(countdownInterval);
-                  countdownOverlay.classList.remove("show");
-                  isCountingDown = false;
+        const countdownInterval = setInterval(() => {
+          count--;
+          if (count > 0) {
+            startCountdown(count);
+          } else if (count === 0) {
+            startCountdown("GO!");
+          } else {
+            clearInterval(countdownInterval);
+            countdownOverlay.classList.remove("show");
+            isCountingDown = false;
 
-                  actualPlay(); 
-              }
-          }, 1000);
+            actualPlay();
+          }
+        }, 1000);
       } else {
-          actualPlay(); 
+        actualPlay();
       }
     }
 
@@ -1488,13 +1659,13 @@
         }
 
         if (audio.currentTime === 0 && lyrics.length > 0 && lrcLoaded) {
-            const divs = lyricsDiv.querySelectorAll("div");
-            divs.forEach((div) => div.classList.remove("highlight"));
-            currentLine = -1;
-            lyricsDiv.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+          const divs = lyricsDiv.querySelectorAll("div");
+          divs.forEach((div) => div.classList.remove("highlight"));
+          currentLine = -1;
+          lyricsDiv.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         }
       }
     }
@@ -1566,7 +1737,7 @@
     }
 
     function savePlaylists() {
-     
+
     }
 
     function renderPlaylists() {
@@ -1617,7 +1788,7 @@
       event.stopPropagation();
       showConfirmModal(`Xóa danh sách phát "${name}"?`, `Bạn có chắc chắn muốn xóa vĩnh viễn danh sách phát "${name}" và tất cả bài hát bên trong không?`, () => {
         delete playlists[name];
-        savePlaylists(); 
+        savePlaylists();
         renderPlaylists();
         if (activePlaylistName === name) {
           activePlaylistName = null;
@@ -1645,24 +1816,24 @@
 
       activePlaylistName = name;
       currentPlaylistSongs = [...playlists[name]];
-      currentSongIndex = -1; 
+      currentSongIndex = -1;
       currentPlaylistTitle.textContent = `Danh sách: ${name}`;
       currentPlaylistDiv.classList.add('show');
-      savePlaylists(); 
+      savePlaylists();
       renderPlaylists();
-      updateCurrentPlaylistDisplay(); 
+      updateCurrentPlaylistDisplay();
       audio.pause();
-      audio.src = ''; 
-      audioLoaded = false; 
+      audio.src = '';
+      audioLoaded = false;
       songTitleDiv.textContent = '';
       displaySongTitleOnDisc('');
       albumArtDiv.classList.remove("show");
       albumArtDiv.classList.remove("playing");
       lyricsDiv.classList.remove("show");
-      checkAndShowControls(); 
-    
+      checkAndShowControls();
+
       if (currentPlaylistSongs.length > 0) {
-         playSongFromPlaylist(0); 
+        playSongFromPlaylist(0);
       }
     }
 
@@ -1682,7 +1853,7 @@
         updateCurrentPlaylistDisplay();
         renderPlaylists();
         if (currentPlaylistSongs.length === 1 && currentSongIndex === -1) {
-            playSongFromPlaylist(0);
+          playSongFromPlaylist(0);
         }
       } else {
         alert("Bài hát đã có trong danh sách phát này.");
@@ -1695,7 +1866,7 @@
           const wasPlayingThisSong = (currentSongIndex === songIndex && audio.src === playlists[playlistName][songIndex].url);
 
           playlists[playlistName].splice(songIndex, 1);
-          savePlaylists(); 
+          savePlaylists();
           currentPlaylistSongs = [...playlists[playlistName]];
 
           if (wasPlayingThisSong) {
@@ -1709,7 +1880,7 @@
             currentSongIndex = -1;
             checkAndShowControls();
             if (currentPlaylistSongs.length > 0) {
-                playNextSongInPlaylist();
+              playNextSongInPlaylist();
             }
           } else if (currentSongIndex > songIndex) {
             currentSongIndex--;
@@ -1748,33 +1919,33 @@
       lrcLoaded = false;
       lyricsDiv.classList.remove("show");
       setupVisualizer();
-      playAudio(); 
+      playAudio();
       updateCurrentPlaylistDisplay();
     }
 
-   
+
 
     function playNextSongInPlaylist() {
-        if (currentPlaylistSongs.length === 0) {
-            audio.pause();
-            albumArtDiv.classList.remove("playing");
-            currentSongIndex = -1;
-            updateCurrentPlaylistDisplay();
-            checkAndShowControls();
-            return;
-        }
+      if (currentPlaylistSongs.length === 0) {
+        audio.pause();
+        albumArtDiv.classList.remove("playing");
+        currentSongIndex = -1;
+        updateCurrentPlaylistDisplay();
+        checkAndShowControls();
+        return;
+      }
 
-        let nextIndex = currentSongIndex + 1;
-        if (nextIndex >= currentPlaylistSongs.length) {
-            audio.pause();
-            albumArtDiv.classList.remove("playing");
-            currentSongIndex = -1;
-            updateCurrentPlaylistDisplay();
-            checkAndShowControls();
-            return;
-        }
+      let nextIndex = currentSongIndex + 1;
+      if (nextIndex >= currentPlaylistSongs.length) {
+        audio.pause();
+        albumArtDiv.classList.remove("playing");
+        currentSongIndex = -1;
+        updateCurrentPlaylistDisplay();
+        checkAndShowControls();
+        return;
+      }
 
-        playSongFromPlaylist(nextIndex);
+      playSongFromPlaylist(nextIndex);
     }
 
 
