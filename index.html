@@ -26,7 +26,20 @@
       --disc-border-inner: #0088cc;
       --disc-border-outer: #880088;
       --disc-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6);
-      --disc-text-color: #fff;
+      --disc-text-color: #c9c9ff;
+
+      --modal-bg: rgba(0, 0, 0, 0.7);
+      --modal-border: 2px solid var(--neon-blue);
+      --modal-glow: 0 0 25px rgba(0, 255, 255, 0.7);
+      --input-bg: rgba(255, 255, 255, 0.1);
+      --input-border: 1px solid var(--neon-purple);
+      --input-focus-shadow: 0 0 10px var(--neon-purple);
+      --playlist-add-btn: #28a745;
+      --playlist-add-btn-hover: #218838;
+      --playlist-add-btn-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+
+      --confirm-btn-ok: #28a745;
+      --confirm-btn-cancel: #dc3545;
     }
 
     body {
@@ -40,7 +53,7 @@
       justify-content: flex-start;
       min-height: 100vh;
       padding: 40px 20px;
-      overflow: hidden;
+      overflow-x: hidden;
       position: relative;
     }
 
@@ -209,7 +222,7 @@
     }
 
     #albumArt {
-      margin-top: -230px;
+      margin-top: 30px;
       width: 250px;
       height: 250px;
       border-radius: 50%;
@@ -272,7 +285,7 @@
     .song-title-char {
       position: absolute;
       transform-origin: center bottom;
-      color: #c9c9ff;
+      color: var(--disc-text-color);
       text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-purple), 0 0 15px rgba(255, 255, 255, 0.5);
       font-size: 0.9em;
       font-weight: 700;
@@ -530,6 +543,408 @@
         opacity: 0;
       }
     }
+
+    #playlist-management-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 100;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    #playlists-area {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    #playlist-controls {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    #playlist-controls button {
+      background: linear-gradient(45deg, rgba(0, 150, 200, 0.15), rgba(150, 0, 200, 0.15));
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+
+    #playlist-controls button:hover {
+      background: linear-gradient(45deg, rgba(0, 150, 200, 0.25), rgba(150, 0, 200, 0.25));
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    #playlists-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 250px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    }
+
+    #playlists-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #playlists-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+
+    #playlists-list::-webkit-scrollbar-thumb {
+      background: var(--neon-blue);
+      border-radius: 8px;
+      box-shadow: 0 0 8px var(--neon-blue);
+    }
+
+
+    .playlist-item {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--neon-purple);
+      color: var(--neon-purple);
+      padding: 8px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px var(--neon-purple);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .playlist-item:hover {
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 15px var(--neon-purple);
+      transform: translateY(-2px);
+    }
+
+    .playlist-item.active {
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+      color: white;
+      box-shadow: 0 0 20px var(--neon-blue), 0 0 25px var(--neon-purple);
+    }
+
+    .playlist-item button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: transform 0.2s ease;
+      padding: 0 5px;
+    }
+
+    .playlist-item button:hover {
+      transform: scale(1.2);
+      color: red;
+    }
+
+    #current-playlist {
+      background: var(--lyrics-bg);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--lyrics-shadow);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      min-height: 100px;
+      max-height: 400px;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      width: 400px;
+      position: absolute;
+      left: 290px;
+      top: 0;
+      pointer-events: none;
+    }
+
+    #current-playlist.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #current-playlist h2 {
+      text-align: center;
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    #playlist-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    #playlist-actions button {
+      background: var(--playlist-add-btn);
+      border: 2px solid var(--playlist-add-btn);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: var(--playlist-add-btn-shadow);
+    }
+
+    #playlist-actions button:hover {
+      background: var(--playlist-add-btn-hover);
+      box-shadow: 0 0 20px rgba(40, 167, 69, 1);
+      transform: translateY(-2px);
+    }
+
+
+    #playlist-songs {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #playlist-songs li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    #playlist-songs li:last-child {
+      border-bottom: none;
+    }
+
+    #playlist-songs li:hover {
+      background-color: rgba(0, 255, 255, 0.1);
+      color: var(--neon-blue);
+    }
+
+    #playlist-songs li.playing {
+      background-color: rgba(255, 0, 255, 0.2);
+      color: var(--neon-purple);
+      font-weight: bold;
+      box-shadow: inset 0 0 10px rgba(255, 0, 255, 0.5);
+    }
+
+    #playlist-songs li span {
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #playlist-songs li .remove-song-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1rem;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #playlist-songs li .remove-song-btn:hover {
+      color: red;
+      transform: scale(1.1);
+    }
+
+    #playlist-playback-modes {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    #playlist-playback-modes button {
+      background: none;
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      padding: 8px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px var(--neon-blue);
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    #playlist-playback-modes button.active {
+      background-color: rgba(0, 255, 255, 0.25);
+      box-shadow: 0 0 20px var(--neon-blue), inset 0 0 8px rgba(0, 255, 255, 0.7);
+    }
+
+    #playlist-playback-modes button:hover {
+      background-color: rgba(0, 255, 255, 0.25);
+      box-shadow: 0 0 20px var(--neon-blue), inset 0 0 8px rgba(0, 255, 255, 0.7);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: var(--modal-bg);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, rgba(29, 27, 64, 0.9), rgba(17, 17, 43, 0.9));
+      margin: auto;
+      padding: 40px;
+      border: var(--modal-border);
+      border-radius: 25px;
+      width: 80%;
+      max-width: 450px;
+      box-shadow: var(--modal-glow);
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .modal.show .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-content h3 {
+      color: var(--neon-blue);
+      font-size: 2rem;
+      margin-bottom: 25px;
+      text-shadow: var(--text-glow-strength) var(--neon-blue);
+    }
+
+    .modal-content input[type="text"] {
+      width: calc(100% - 40px);
+      padding: 15px;
+      margin-bottom: 25px;
+      border: var(--input-border);
+      background-color: var(--input-bg);
+      color: white;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
+    .modal-content input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .modal-content input[type="text"]:focus {
+      border-color: var(--neon-purple);
+      box-shadow: var(--input-focus-shadow);
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .modal-buttons button {
+      background: linear-gradient(45deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15));
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      padding: 12px 25px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px var(--neon-blue);
+    }
+
+    .modal-buttons button:hover {
+      background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25));
+      color: var(--neon-purple);
+      box-shadow: 0 0 25px var(--neon-purple);
+      transform: translateY(-2px);
+    }
+
+    #confirmModal .modal-content h3 {
+      font-size: 1.5rem;
+      color: var(--neon-purple);
+    }
+
+    #confirmModal .modal-content p {
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    #confirmModal .modal-buttons button.confirm-ok {
+      background-color: var(--confirm-btn-ok);
+      border-color: var(--confirm-btn-ok);
+      box-shadow: 0 0 15px var(--confirm-btn-ok);
+      color: white;
+    }
+
+    #confirmModal .modal-buttons button.confirm-ok:hover {
+      background-color: var(--playlist-add-btn-hover);
+      box-shadow: 0 0 25px var(--confirm-btn-ok);
+    }
+
+    #confirmModal .modal-buttons button.confirm-cancel {
+      background-color: var(--confirm-btn-cancel);
+      border-color: var(--confirm-btn-cancel);
+      box-shadow: 0 0 15px var(--confirm-btn-cancel);
+      color: white;
+    }
+
+    #confirmModal .modal-buttons button.confirm-cancel:hover {
+      background-color: #c82333;
+      box-shadow: 0 0 25px var(--confirm-btn-cancel);
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -537,12 +952,33 @@
 <body>
   <canvas id="visualizer"></canvas>
 
+  <div id="playlist-management-container">
+    <div id="playlists-area">
+      <div id="playlist-controls">
+        <button onclick="showCreatePlaylistModal()">+ Tạo danh sách mới</button>
+      </div>
+      <div id="playlists-list">
+      </div>
+    </div>
+    <div id="current-playlist">
+      <h2 id="current-playlist-title"></h2>
+      <div id="playlist-actions">
+        <button onclick="triggerAddSongToFileInput()">
+          <span class="icon">➕</span> Thêm nhạc vào DS
+        </button>
+      </div>
+     
+      <ul id="playlist-songs">
+      </ul>
+    </div>
+  </div>
+
   <h1>🎧 Trọng Music Player</h1>
   <div id="songTitle"></div>
 
   <div class="file-inputs">
     <label for="audioFile" class="file-input-label">
-      <span class="icon">🎵</span> Chọn nhạc MP3
+      <span class="icon">🎵</span> Chọn nhạc MP3 (Chơi đơn)
     </label>
     <input type="file" id="audioFile" accept="audio/*, .mp3, .m4a, .wav" />
 
@@ -585,7 +1021,29 @@
     <span id="countdown-number"></span>
   </div>
 
-  <script>
+  <div id="createPlaylistModal" class="modal">
+    <div class="modal-content">
+      <h3>Tạo Danh Sách Phát Mới</h3>
+      <input type="text" id="newPlaylistNameInput" placeholder="Nhập tên danh sách phát..." />
+      <div class="modal-buttons">
+        <button onclick="createNewPlaylist()">Tạo</button>
+        <button onclick="hideCreatePlaylistModal()">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <h3 id="confirmModalTitle">Xác nhận</h3>
+      <p id="confirmModalMessage"></p>
+      <div class="modal-buttons">
+        <button class="confirm-ok" id="confirmOkButton">Đồng ý</button>
+        <button class="confirm-cancel" id="confirmCancelButton">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+ <script>
     const seekBar = document.getElementById("seekBar");
     const currentTimeSpan = document.getElementById("currentTime");
     const durationSpan = document.getElementById("duration");
@@ -595,7 +1053,7 @@
     const lrcFile = document.getElementById("lrcFile");
     const lyricsDiv = document.getElementById("lyrics");
     const albumArtDiv = document.getElementById("albumArt");
-    const songTitleOnDiscDiv = document.getElementById("songTitleOnDisc");
+    const songTitleOnDiscDiv = document = document.getElementById("songTitleOnDisc");
     const songTitleDiv = document.getElementById("songTitle");
     const controlsDiv = document.querySelector(".controls");
     const speedControlsDiv = document.querySelector(".speed-controls");
@@ -603,11 +1061,34 @@
     const countdownNumber = document.getElementById("countdown-number");
     const speedButtons = document.querySelectorAll(".speed-controls button");
 
+    const playlistsList = document.getElementById('playlists-list');
+    const currentPlaylistDiv = document.getElementById('current-playlist');
+    const currentPlaylistTitle = document.getElementById('current-playlist-title');
+    const playlistSongsUl = document.getElementById('playlist-songs');
+
+    const createPlaylistModal = document.getElementById('createPlaylistModal');
+    const newPlaylistNameInput = document.getElementById('newPlaylistNameInput');
+
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmModalTitle = document.getElementById('confirmModalTitle');
+    const confirmModalMessage = document.getElementById('confirmModalMessage');
+    const confirmOkButton = document.getElementById('confirmOkButton');
+    const confirmCancelButton = document.getElementById('confirmCancelButton');
+
+
     let lyrics = [];
     let currentLine = -1;
     let audioLoaded = false;
     let lrcLoaded = false;
     let isCountingDown = false;
+
+    let playlists = {}; 
+    let activePlaylistName = null; 
+    let currentPlaylistSongs = [];
+    let currentSongIndex = -1;
+    let playbackMode = 'normal'; 
+    let shuffledIndexes = [];
+
 
     const canvas = document.getElementById('visualizer');
     const ctx = canvas.getContext('2d');
@@ -729,7 +1210,7 @@
 
 
     function checkAndShowControls() {
-      if (audioLoaded) {
+      if (audioLoaded || (activePlaylistName && currentPlaylistSongs.length > 0 && currentSongIndex !== -1)) {
         controlsDiv.classList.add("show");
         speedControlsDiv.classList.add("show");
         seekBarContainer.classList.add("show");
@@ -788,8 +1269,43 @@
         currentAverageFrequency = 0;
         setupVisualizer();
         checkAndShowControls();
+
+        activePlaylistName = null;
+        currentPlaylistDiv.classList.remove('show');
+        renderPlaylists(); 
+        updateCurrentPlaylistDisplay(); 
+        playAudio(); 
       }
     });
+
+    const addSongFileInput = document.createElement('input');
+    addSongFileInput.type = 'file';
+    addSongFileInput.accept = 'audio/*, .mp3, .m4a, .wav';
+    addSongFileInput.multiple = true;
+    addSongFileInput.style.display = 'none';
+    document.body.appendChild(addSongFileInput);
+
+    addSongFileInput.addEventListener("change", async function () {
+      if (!activePlaylistName) {
+        alert("Vui lòng chọn hoặc tạo một danh sách phát trước khi thêm nhạc!");
+        return;
+      }
+
+      const files = this.files;
+      if (files.length > 0) {
+        for (const file of files) {
+          const url = URL.createObjectURL(file);
+          const fileName = file.name.split('.').slice(0, -1).join('.');
+          addSongToPlaylist(fileName, url);
+        }
+      }
+      this.value = '';
+    });
+
+    function triggerAddSongToFileInput() {
+      addSongFileInput.click();
+    }
+
 
     lrcFile.addEventListener("change", function () {
       const file = this.files[0];
@@ -798,7 +1314,6 @@
         reader.onload = function (e) {
           parseLRC(e.target.result);
           lrcLoaded = true;
-          // When LRC is loaded, hide album art and show lyrics
           albumArtDiv.classList.remove("show");
           albumArtDiv.classList.remove("playing");
           lyricsDiv.classList.add("show");
@@ -819,7 +1334,10 @@
           const min = parseInt(match[1]);
           const sec = parseFloat(match[2]);
           const time = min * 60 + sec;
-          lyrics.push({ time, text: match[3].trim() });
+          lyrics.push({
+            time,
+            text: match[3].trim()
+          });
         }
       }
       lyrics.sort((a, b) => a.time - b.time);
@@ -836,17 +1354,23 @@
     }
 
     audio.addEventListener("timeupdate", function () {
-      if (!lrcLoaded) { // Only show album art if LRC is NOT loaded
+      if (!seekBar.changing) {
+        seekBar.value = audio.currentTime;
+      }
+      currentTimeSpan.textContent = formatTime(audio.currentTime);
+
+      if (!lrcLoaded) {
         if (audioLoaded && !audio.paused) {
           albumArtDiv.classList.add("show");
           albumArtDiv.classList.add("playing");
-          lyricsDiv.classList.remove("show"); // Hide lyrics
+          lyricsDiv.classList.remove("show");
         } else if (audioLoaded && audio.paused) {
           albumArtDiv.classList.remove("playing");
+        } else if (!audioLoaded) {
+            albumArtDiv.classList.remove("show");
         }
         return;
       } else {
-        // If lyrics are loaded, show lyrics and hide album art
         lyricsDiv.classList.add("show");
         albumArtDiv.classList.remove("show");
         albumArtDiv.classList.remove("playing");
@@ -883,75 +1407,98 @@
       currentLine = -1;
       lyricsDiv.classList.remove("show");
       albumArtDiv.classList.remove("playing");
-      if (!lrcLoaded) { // Only hide disc if no lrc was loaded
-        albumArtDiv.classList.remove("show");
+
+
+      if (activePlaylistName && currentPlaylistSongs.length > 0) {
+        playNextSongInPlaylist();
+      } else { 
+        audioLoaded = false; 
+        checkAndShowControls(); 
+        if (!lrcLoaded) { 
+            albumArtDiv.classList.remove("show");
+        }
       }
     });
 
     function playAudio() {
-      if (!audio.src) {
-        alert("Vui lòng tải lên một tệp âm thanh trước!");
+      if (!audio.src && (!activePlaylistName || currentPlaylistSongs.length === 0 || currentSongIndex === -1) && !isCountingDown) {
+        alert("Vui lòng tải lên một tệp âm thanh hoặc chọn một danh sách phát và một bài hát để phát!");
         return;
       }
+
       if (isCountingDown) return;
 
-      isCountingDown = true;
-      let count = 3;
 
-      countdownOverlay.classList.add("show");
+      if (audio.paused || audio.currentTime === 0) {
+          isCountingDown = true;
+          let count = 3;
 
-      const startCountdown = (num) => {
-        countdownNumber.textContent = num;
-        countdownNumber.style.animation = 'none';
-        void countdownNumber.offsetWidth;
-        countdownNumber.style.animation = 'countdownPop 1s ease-out forwards';
-      };
+          countdownOverlay.classList.add("show");
 
-      startCountdown(count);
-      audio.pause();
+          const startCountdown = (num) => {
+              countdownNumber.textContent = num;
+              countdownNumber.style.animation = 'none';
+              void countdownNumber.offsetWidth;
+              countdownNumber.style.animation = 'countdownPop 1s ease-out forwards';
+          };
 
-      const countdownInterval = setInterval(() => {
-        count--;
-        if (count > 0) {
           startCountdown(count);
-        } else if (count === 0) {
-          startCountdown("GO!");
+          audio.pause(); 
+
+          const countdownInterval = setInterval(() => {
+              count--;
+              if (count > 0) {
+                  startCountdown(count);
+              } else if (count === 0) {
+                  startCountdown("GO!");
+              } else {
+                  clearInterval(countdownInterval);
+                  countdownOverlay.classList.remove("show");
+                  isCountingDown = false;
+
+                  actualPlay(); 
+              }
+          }, 1000);
+      } else {
+          actualPlay(); 
+      }
+    }
+
+
+    function actualPlay() {
+      if (audio.src) {
+        if (lrcLoaded) {
+          displayLyricsContent();
+          lyricsDiv.classList.add("show");
+          albumArtDiv.classList.remove("show");
+          albumArtDiv.classList.remove("playing");
         } else {
-          clearInterval(countdownInterval);
-          countdownOverlay.classList.remove("show");
-          isCountingDown = false;
+          lyricsDiv.classList.remove("show");
+          albumArtDiv.classList.add("show");
+          albumArtDiv.classList.add("playing");
+        }
+        checkAndShowControls();
 
-          if (lrcLoaded) {
-            displayLyricsContent();
-            lyricsDiv.classList.add("show");
-            albumArtDiv.classList.remove("show");
-            albumArtDiv.classList.remove("playing");
-          } else {
-            lyricsDiv.classList.remove("show");
-            albumArtDiv.classList.add("show");
-            albumArtDiv.classList.add("playing");
-          }
-
-          if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume().then(() => {
-              audio.play();
-            });
-          } else {
+        if (audioContext && audioContext.state === 'suspended') {
+          audioContext.resume().then(() => {
             audio.play();
-          }
+          });
+        } else {
+          audio.play();
+        }
 
-          if (audio.currentTime === 0 && lyrics.length > 0) {
+        if (audio.currentTime === 0 && lyrics.length > 0 && lrcLoaded) {
             const divs = lyricsDiv.querySelectorAll("div");
             divs.forEach((div) => div.classList.remove("highlight"));
             currentLine = -1;
             lyricsDiv.scrollTo({
-              top: 0,
-              behavior: 'smooth'
+                top: 0,
+                behavior: 'smooth'
             });
-          }
         }
-      }, 1000);
+      }
     }
+
 
     function pauseAudio() {
       audio.pause();
@@ -990,13 +1537,7 @@
     audio.addEventListener("loadedmetadata", () => {
       seekBar.max = audio.duration;
       durationSpan.textContent = formatTime(audio.duration);
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      if (!seekBar.changing) {
-        seekBar.value = audio.currentTime;
-      }
-      currentTimeSpan.textContent = formatTime(audio.currentTime);
+      checkAndShowControls();
     });
 
     seekBar.addEventListener("input", () => {
@@ -1008,6 +1549,273 @@
       audio.currentTime = seekBar.value;
       seekBar.changing = false;
     });
+
+    function showConfirmModal(title, message, onConfirm) {
+      confirmModalTitle.textContent = title;
+      confirmModalMessage.textContent = message;
+      confirmOkButton.onclick = () => {
+        onConfirm();
+        hideConfirmModal();
+      };
+      confirmCancelButton.onclick = hideConfirmModal;
+      confirmModal.classList.add('show');
+    }
+
+    function hideConfirmModal() {
+      confirmModal.classList.remove('show');
+    }
+
+    function savePlaylists() {
+     
+    }
+
+    function renderPlaylists() {
+      playlistsList.innerHTML = '';
+      for (const name in playlists) {
+        const playlistItem = document.createElement('div');
+        playlistItem.classList.add('playlist-item');
+        if (name === activePlaylistName) {
+          playlistItem.classList.add('active');
+        }
+        playlistItem.dataset.name = name;
+        playlistItem.innerHTML = `
+          <span>${name} (${playlists[name].length} bài)</span>
+          <button onclick="deletePlaylist('${name}', event)">✖</button>
+        `;
+        playlistItem.addEventListener('click', () => activatePlaylist(name));
+        playlistsList.appendChild(playlistItem);
+      }
+    }
+
+    function showCreatePlaylistModal() {
+      newPlaylistNameInput.value = '';
+      createPlaylistModal.classList.add('show');
+    }
+
+    function hideCreatePlaylistModal() {
+      createPlaylistModal.classList.remove('show');
+    }
+
+    function createNewPlaylist() {
+      const name = newPlaylistNameInput.value.trim();
+      if (name) {
+        if (playlists[name]) {
+          alert("Danh sách phát đã tồn tại. Vui lòng chọn tên khác.");
+          return;
+        }
+        playlists[name] = [];
+        savePlaylists();
+        renderPlaylists();
+        hideCreatePlaylistModal();
+        activatePlaylist(name);
+      } else {
+        alert("Tên danh sách phát không được để trống!");
+      }
+    }
+
+    function deletePlaylist(name, event) {
+      event.stopPropagation();
+      showConfirmModal(`Xóa danh sách phát "${name}"?`, `Bạn có chắc chắn muốn xóa vĩnh viễn danh sách phát "${name}" và tất cả bài hát bên trong không?`, () => {
+        delete playlists[name];
+        savePlaylists(); 
+        renderPlaylists();
+        if (activePlaylistName === name) {
+          activePlaylistName = null;
+          currentPlaylistSongs = [];
+          currentSongIndex = -1;
+          currentPlaylistDiv.classList.remove('show');
+          updateCurrentPlaylistDisplay();
+          audio.pause();
+          audio.src = '';
+          songTitleDiv.textContent = '';
+          displaySongTitleOnDisc('');
+          albumArtDiv.classList.remove("show");
+          albumArtDiv.classList.remove("playing");
+          lyricsDiv.classList.remove("show");
+          checkAndShowControls();
+        }
+      });
+    }
+
+    function activatePlaylist(name) {
+      if (activePlaylistName === name && currentPlaylistDiv.classList.contains('show')) {
+        currentPlaylistDiv.classList.remove('show');
+        return;
+      }
+
+      activePlaylistName = name;
+      currentPlaylistSongs = [...playlists[name]];
+      currentSongIndex = -1; 
+      currentPlaylistTitle.textContent = `Danh sách: ${name}`;
+      currentPlaylistDiv.classList.add('show');
+      savePlaylists(); 
+      renderPlaylists();
+      updateCurrentPlaylistDisplay(); 
+      audio.pause();
+      audio.src = ''; 
+      audioLoaded = false; 
+      songTitleDiv.textContent = '';
+      displaySongTitleOnDisc('');
+      albumArtDiv.classList.remove("show");
+      albumArtDiv.classList.remove("playing");
+      lyricsDiv.classList.remove("show");
+      checkAndShowControls(); 
+    
+      if (currentPlaylistSongs.length > 0) {
+         playSongFromPlaylist(0); 
+      }
+    }
+
+    function addSongToPlaylist(songName, songUrl) {
+      if (!activePlaylistName) {
+        alert("Vui lòng chọn hoặc tạo một danh sách phát trước.");
+        return;
+      }
+      const newSong = {
+        name: songName,
+        url: songUrl
+      };
+      if (!playlists[activePlaylistName].some(song => song.url === newSong.url)) {
+        playlists[activePlaylistName].push(newSong);
+        savePlaylists();
+        currentPlaylistSongs = [...playlists[activePlaylistName]];
+        updateCurrentPlaylistDisplay();
+        renderPlaylists();
+        if (currentPlaylistSongs.length === 1 && currentSongIndex === -1) {
+            playSongFromPlaylist(0);
+        }
+      } else {
+        alert("Bài hát đã có trong danh sách phát này.");
+      }
+    }
+
+    function removeSongFromPlaylist(playlistName, songIndex) {
+      showConfirmModal(`Xóa bài hát khỏi danh sách?`, `Bạn có chắc chắn muốn xóa bài hát "${playlists[playlistName][songIndex].name}" khỏi danh sách phát "${playlistName}" không?`, () => {
+        if (playlistName === activePlaylistName) {
+          const wasPlayingThisSong = (currentSongIndex === songIndex && audio.src === playlists[playlistName][songIndex].url);
+
+          playlists[playlistName].splice(songIndex, 1);
+          savePlaylists(); 
+          currentPlaylistSongs = [...playlists[playlistName]];
+
+          if (wasPlayingThisSong) {
+            audio.pause();
+            audio.src = '';
+            songTitleDiv.textContent = '';
+            displaySongTitleOnDisc('');
+            albumArtDiv.classList.remove("show");
+            albumArtDiv.classList.remove("playing");
+            lyricsDiv.classList.remove("show");
+            currentSongIndex = -1;
+            checkAndShowControls();
+            if (currentPlaylistSongs.length > 0) {
+                playNextSongInPlaylist();
+            }
+          } else if (currentSongIndex > songIndex) {
+            currentSongIndex--;
+          }
+
+
+          updateCurrentPlaylistDisplay();
+          renderPlaylists();
+
+          if (currentPlaylistSongs.length === 0 && activePlaylistName === playlistName) {
+            currentPlaylistDiv.classList.remove('show');
+          }
+        }
+      });
+    }
+
+
+    function playSongFromPlaylist(index) {
+      if (!currentPlaylistSongs[index]) {
+        if (activePlaylistName && currentPlaylistSongs.length === 0) {
+          alert("Danh sách phát hiện tại rỗng.");
+        }
+        audio.pause();
+        albumArtDiv.classList.remove("playing");
+        currentSongIndex = -1;
+        updateCurrentPlaylistDisplay();
+        checkAndShowControls();
+        return;
+      }
+
+      audio.src = currentPlaylistSongs[index].url;
+      audioLoaded = true;
+      songTitleDiv.textContent = currentPlaylistSongs[index].name;
+      displaySongTitleOnDisc(currentPlaylistSongs[index].name);
+      currentSongIndex = index;
+      lrcLoaded = false;
+      lyricsDiv.classList.remove("show");
+      setupVisualizer();
+      playAudio(); 
+      updateCurrentPlaylistDisplay();
+    }
+
+   
+
+    function playNextSongInPlaylist() {
+        if (currentPlaylistSongs.length === 0) {
+            audio.pause();
+            albumArtDiv.classList.remove("playing");
+            currentSongIndex = -1;
+            updateCurrentPlaylistDisplay();
+            checkAndShowControls();
+            return;
+        }
+
+        let nextIndex = currentSongIndex + 1;
+        if (nextIndex >= currentPlaylistSongs.length) {
+            audio.pause();
+            albumArtDiv.classList.remove("playing");
+            currentSongIndex = -1;
+            updateCurrentPlaylistDisplay();
+            checkAndShowControls();
+            return;
+        }
+
+        playSongFromPlaylist(nextIndex);
+    }
+
+
+
+    function updateCurrentPlaylistDisplay() {
+      playlistSongsUl.innerHTML = '';
+      if (currentPlaylistSongs.length === 0) {
+        playlistSongsUl.innerHTML = '<li>Chưa có bài hát nào trong danh sách này.</li>';
+        return;
+      }
+      currentPlaylistSongs.forEach((song, index) => {
+        const li = document.createElement('li');
+        li.textContent = song.name;
+        li.dataset.index = index;
+        if (currentSongIndex !== -1 && currentPlaylistSongs[currentSongIndex] && song.url === currentPlaylistSongs[currentSongIndex].url) {
+          li.classList.add('playing');
+        }
+        li.addEventListener('click', () => playSongFromPlaylist(index));
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '✖';
+        removeBtn.classList.add('remove-song-btn');
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          removeSongFromPlaylist(activePlaylistName, index);
+        });
+        li.appendChild(removeBtn);
+        playlistSongsUl.appendChild(li);
+      });
+    }
+
+    renderPlaylists();
+    currentPlaylistDiv.classList.remove('show');
+    audio.pause();
+    audio.src = '';
+    songTitleDiv.textContent = '';
+    displaySongTitleOnDisc('');
+    albumArtDiv.classList.remove("show");
+    albumArtDiv.classList.remove("playing");
+    lyricsDiv.classList.remove("show");
+    checkAndShowControls();
   </script>
 </body>
 
