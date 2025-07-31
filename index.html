@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Trọng Music Player</title>
@@ -7,16 +8,25 @@
     :root {
       --neon-blue: #0ff;
       --neon-purple: #f0f;
-      --neon-songtitle: #8a2be2; 
-      --bg-dark-start: #0a081d; 
-      --bg-dark-mid: #1d1b40; 
-      --bg-dark-end: #17172b; 
+      --neon-songtitle: #8a2be2;
+      --bg-dark-start: #0a081d;
+      --bg-dark-mid: #1d1b40;
+      --bg-dark-end: #17172b;
       --control-btn-color: #0ff;
-      --lyrics-bg: rgba(0, 0, 0, 0.4); 
-      --lyrics-shadow: 0 0 25px rgba(0, 255, 255, 0.5); 
+      --lyrics-bg: rgba(0, 0, 0, 0.4);
+      --lyrics-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
       --countdown-color: #ff0;
       --text-glow-strength: 0 0 10px, 0 0 20px, 0 0 30px;
-      --visualizer-color: #00ffff; 
+      --visualizer-color: #00ffff;
+      --dark-pulse-color-1: #360036;
+      --dark-pulse-color-2: #00004d;
+      --dark-pulse-color-3: #1a001a;
+
+      --disc-center-color: #0d0a26;
+      --disc-border-inner: #0088cc;
+      --disc-border-outer: #880088;
+      --disc-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6);
+      --disc-text-color: #fff;
     }
 
     body {
@@ -30,44 +40,51 @@
       justify-content: flex-start;
       min-height: 100vh;
       padding: 40px 20px;
-      overflow: hidden; 
+      overflow: hidden;
       position: relative;
     }
 
     #visualizer {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0; 
-        opacity: 0.2; 
-        pointer-events: none; 
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.3;
+      pointer-events: none;
     }
 
-    h1, #songTitle, .file-inputs, #lyrics, .controls, .speed-controls {
-        position: relative;
-        z-index: 10;
+    h1,
+    #songTitle,
+    .file-inputs,
+    #lyrics,
+    .controls,
+    .speed-controls,
+    #albumArt,
+    .seek-bar-container {
+      position: relative;
+      z-index: 10;
     }
 
     h1 {
-      font-size: 3.5rem; 
+      font-size: 3.5rem;
       margin-bottom: 10px;
       background: linear-gradient(to right, var(--neon-purple), var(--neon-blue));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: var(--text-glow-strength) rgba(255, 255, 255, 0.9); 
-      letter-spacing: 3px; 
+      text-shadow: var(--text-glow-strength) rgba(255, 255, 255, 0.9);
+      letter-spacing: 3px;
     }
 
     #songTitle {
-      font-size: 2.2rem; 
-      color: var(--neon-songtitle); 
+      font-size: 2.2rem;
+      color: var(--neon-songtitle);
       text-shadow: 0 0 15px var(--neon-songtitle), 0 0 25px rgba(138, 43, 226, 0.7);
       margin-bottom: 30px;
       text-align: center;
       min-height: 2.5rem;
-      font-weight: 700; 
+      font-weight: 700;
     }
 
     input[type="file"] {
@@ -75,20 +92,20 @@
     }
 
     .file-input-label {
-      background: linear-gradient(45deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15)); 
-      border: 2px solid var(--neon-blue); 
+      background: linear-gradient(45deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15));
+      border: 2px solid var(--neon-blue);
       position: relative;
       overflow: hidden;
       color: var(--neon-blue);
       padding: 14px 30px;
       border-radius: 50px;
       cursor: pointer;
-      font-size: 1.1rem; 
+      font-size: 1.1rem;
       font-weight: 600;
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      box-shadow: 0 0 20px var(--neon-blue), inset 0 0 8px rgba(0, 255, 255, 0.6); 
+      box-shadow: 0 0 20px var(--neon-blue), inset 0 0 8px rgba(0, 255, 255, 0.6);
       margin: 10px;
       display: inline-flex;
       align-items: center;
@@ -102,7 +119,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent); 
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
       transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
@@ -111,10 +128,10 @@
     }
 
     .file-input-label:hover {
-      background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25)); 
+      background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25));
       color: var(--neon-purple);
-      box-shadow: 0 0 30px var(--neon-purple), inset 0 0 10px rgba(255, 0, 255, 0.8); 
-      transform: translateY(-4px) scale(1.03); 
+      box-shadow: 0 0 30px var(--neon-purple), inset 0 0 10px rgba(255, 0, 255, 0.8);
+      transform: translateY(-4px) scale(1.03);
     }
 
     .file-input-label:active {
@@ -135,7 +152,7 @@
       text-align: center;
       font-size: 1.4rem;
       line-height: 1.8;
-      background: var(--lyrics-bg); 
+      background: var(--lyrics-bg);
       border-radius: 20px;
       padding: 30px;
       box-shadow: var(--lyrics-shadow);
@@ -144,16 +161,17 @@
       -webkit-backdrop-filter: blur(5px);
       position: relative;
       z-index: 1;
-      opacity: 0; 
-      transform: translateY(30px) scale(0.95); 
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
       transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-      pointer-events: none; 
+      pointer-events: none;
+      flex-shrink: 0;
     }
 
     #lyrics.show {
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
-        pointer-events: auto; 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
     #lyrics::-webkit-scrollbar {
@@ -161,7 +179,7 @@
     }
 
     #lyrics::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.08); 
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 10px;
     }
 
@@ -169,7 +187,7 @@
       background: var(--neon-blue);
       border-radius: 10px;
       border: 2px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 12px var(--neon-blue); 
+      box-shadow: 0 0 12px var(--neon-blue);
     }
 
     #lyrics::-webkit-scrollbar-thumb:hover {
@@ -179,15 +197,96 @@
 
     #lyrics div {
       transition: all 0.4s ease-out, transform 0.2s ease-out;
-      padding: 2px 0; 
-      color: rgba(255, 255, 255, 0.7); 
+      padding: 2px 0;
+      color: rgba(255, 255, 255, 0.7);
     }
 
     .highlight {
       color: var(--neon-blue);
       font-weight: bold;
-      text-shadow: var(--text-glow-strength) var(--neon-blue); 
-      transform: scale(1.07); 
+      text-shadow: var(--text-glow-strength) var(--neon-blue);
+      transform: scale(1.07);
+    }
+
+    #albumArt {
+      margin-top: -230px;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center,
+          var(--disc-center-color) 0%,
+          #1a0f3d 10%,
+          var(--disc-border-inner) 40%,
+          var(--disc-border-outer) 70%,
+          #000000 100%);
+      box-shadow: var(--disc-shadow);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    #albumArt.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    #albumArt.playing {
+      animation: rotateDisc 15s linear infinite;
+    }
+
+    #albumArt::before {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #050510;
+      border: 5px solid rgba(0, 255, 255, 0.7);
+      box-shadow: 0 0 15px var(--neon-blue);
+      z-index: 2;
+    }
+
+    #songTitleOnDisc {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      color: var(--disc-text-color);
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+      white-space: nowrap;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .song-title-char {
+      position: absolute;
+      transform-origin: center bottom;
+      color: #c9c9ff;
+      text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-purple), 0 0 15px rgba(255, 255, 255, 0.5);
+      font-size: 0.9em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    @keyframes rotateDisc {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .controls {
@@ -201,12 +300,12 @@
     }
 
     .controls.show {
-        opacity: 1;
+      opacity: 1;
     }
 
     .controls button {
-      background: linear-gradient(45deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15)); 
-      border: 2px solid var(--neon-blue); 
+      background: linear-gradient(45deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15));
+      border: 2px solid var(--neon-blue);
       position: relative;
       overflow: hidden;
       color: var(--neon-blue);
@@ -218,7 +317,7 @@
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       text-transform: uppercase;
       letter-spacing: 1px;
-      box-shadow: 0 0 20px var(--neon-blue), inset 0 0 8px rgba(0, 255, 255, 0.6); 
+      box-shadow: 0 0 20px var(--neon-blue), inset 0 0 8px rgba(0, 255, 255, 0.6);
     }
 
     .controls button:before {
@@ -237,9 +336,9 @@
     }
 
     .controls button:hover {
-      background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25)); 
+      background: linear-gradient(45deg, rgba(0, 255, 255, 0.25), rgba(255, 0, 255, 0.25));
       color: var(--neon-purple);
-      box-shadow: 0 0 30px var(--neon-purple), inset 0 0 10px rgba(255, 0, 255, 0.8); 
+      box-shadow: 0 0 30px var(--neon-purple), inset 0 0 10px rgba(255, 0, 255, 0.8);
       transform: translateY(-4px) scale(1.03);
     }
 
@@ -249,77 +348,192 @@
     }
 
     .speed-controls {
-        margin-top: 20px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
     }
 
     .speed-controls.show {
-        opacity: 1;
+      opacity: 1;
     }
 
     .speed-controls button {
-        background: none;
-        border: 2px solid var(--neon-purple); 
-        color: var(--neon-purple);
-        padding: 8px 15px;
-        border-radius: 30px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-shadow: 0 0 10px var(--neon-purple);
-        box-shadow: 0 0 10px var(--neon-purple);
+      background: none;
+      border: 2px solid var(--neon-purple);
+      color: var(--neon-purple);
+      padding: 8px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px var(--neon-purple);
+      box-shadow: 0 0 10px var(--neon-purple);
     }
 
     .speed-controls button.active,
     .speed-controls button:hover {
-        background-color: rgba(255, 0, 255, 0.25); 
-        box-shadow: 0 0 20px var(--neon-purple), inset 0 0 8px rgba(255, 0, 255, 0.7); 
+      background-color: rgba(255, 0, 255, 0.25);
+      box-shadow: 0 0 20px var(--neon-purple), inset 0 0 8px rgba(255, 0, 255, 0.7);
     }
 
     #countdown-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6); 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 12rem; 
-        font-weight: bold;
-        color: var(--countdown-color);
-        text-shadow: 0 0 50px var(--countdown-color), 0 0 100px var(--countdown-color), 0 0 150px rgba(255, 255, 0, 0.7); 
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        z-index: 9999; 
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12rem;
+      font-weight: bold;
+      color: var(--countdown-color);
+      text-shadow: 0 0 50px var(--countdown-color), 0 0 100px var(--countdown-color), 0 0 150px rgba(255, 255, 0, 0.7);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      z-index: 9999;
     }
 
     #countdown-overlay.show {
-        opacity: 1;
-        visibility: visible;
+      opacity: 1;
+      visibility: visible;
     }
 
     #countdown-number {
-        animation: countdownPop 1s ease-out forwards;
-        display: block;
+      animation: countdownPop 1s ease-out forwards;
+      display: block;
+    }
+
+    .seek-bar-container {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 700px;
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .seek-bar-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #seekBar {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 12px;
+      background: rgba(0, 255, 255, 0.1);
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    }
+
+    #seekBar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--neon-blue);
+      cursor: grab;
+      box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-purple);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    }
+
+    #seekBar::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--neon-blue);
+      cursor: grab;
+      box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-purple);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    }
+
+    #seekBar:hover::-webkit-slider-thumb,
+    #seekBar:active::-webkit-slider-thumb {
+      background: var(--neon-purple);
+      box-shadow: 0 0 25px var(--neon-purple), 0 0 40px var(--neon-blue);
+      transform: scale(1.1);
+      cursor: grabbing;
+    }
+
+    #seekBar:hover::-moz-range-thumb,
+    #seekBar:active::-moz-range-thumb {
+      background: var(--neon-purple);
+      box-shadow: 0 0 25px var(--neon-purple), 0 0 40px var(--neon-blue);
+      transform: scale(1.1);
+      cursor: grabbing;
+    }
+
+    #seekBar::-webkit-slider-runnable-track {
+      background: linear-gradient(to right,
+          var(--neon-blue) 0%,
+          var(--neon-purple) 100%);
+      border-radius: 10px;
+      height: 12px;
+      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    #seekBar::-moz-range-track {
+      background: linear-gradient(to right,
+          var(--neon-blue) 0%,
+          var(--neon-purple) 100%);
+      border-radius: 10px;
+      height: 12px;
+      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    .time-display {
+      font-size: 1.1rem;
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px var(--neon-blue);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .time-display span {
+      transition: color 0.3s ease;
+    }
+
+    .time-display #currentTime {
+      color: var(--neon-purple);
+      text-shadow: 0 0 12px var(--neon-purple);
     }
 
     @keyframes countdownPop {
-        0% { transform: scale(0.5); opacity: 0; }
-        50% { transform: scale(1.3); opacity: 1; }
-        100% { transform: scale(1); opacity: 0; }
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0;
+      }
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <canvas id="visualizer"></canvas>
 
@@ -337,10 +551,21 @@
     </label>
     <input type="file" id="lrcFile" accept=".lrc,.txt" />
   </div>
-  
+
   <audio id="audio"></audio>
 
   <div id="lyrics">Upload .lrc to see synchronized lyrics here</div>
+  <div id="albumArt">
+    <div id="songTitleOnDisc"></div>
+  </div>
+
+
+  <div class="seek-bar-container">
+    <input type="range" id="seekBar" value="0" min="0" max="0" step="0.01" />
+    <div class="time-display">
+      <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+    </div>
+  </div>
 
   <div class="controls">
     <button onclick="rewindAudio()">⏪ -10s</button>
@@ -361,10 +586,16 @@
   </div>
 
   <script>
+    const seekBar = document.getElementById("seekBar");
+    const currentTimeSpan = document.getElementById("currentTime");
+    const durationSpan = document.getElementById("duration");
+    const seekBarContainer = document.querySelector(".seek-bar-container");
     const audio = document.getElementById("audio");
     const audioFile = document.getElementById("audioFile");
     const lrcFile = document.getElementById("lrcFile");
     const lyricsDiv = document.getElementById("lyrics");
+    const albumArtDiv = document.getElementById("albumArt");
+    const songTitleOnDiscDiv = document.getElementById("songTitleOnDisc");
     const songTitleDiv = document.getElementById("songTitle");
     const controlsDiv = document.querySelector(".controls");
     const speedControlsDiv = document.querySelector(".speed-controls");
@@ -376,7 +607,7 @@
     let currentLine = -1;
     let audioLoaded = false;
     let lrcLoaded = false;
-    let isCountingDown = false; 
+    let isCountingDown = false;
 
     const canvas = document.getElementById('visualizer');
     const ctx = canvas.getContext('2d');
@@ -384,72 +615,162 @@
     let analyser;
     let dataArray;
     let bufferLength;
+    let currentAverageFrequency = 0;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     });
 
     function setupVisualizer() {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioContext.createMediaElementSource(audio);
-            analyser = audioContext.createAnalyser();
-            source.connect(analyser);
-            analyser.connect(audioContext.destination);
-            analyser.fftSize = 256; 
-            bufferLength = analyser.frequencyBinCount;
-            dataArray = new Uint8Array(bufferLength);
-        }
-        drawVisualizer();
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaElementSource(audio);
+        analyser = audioContext.createAnalyser();
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+        analyser.fftSize = 256;
+        bufferLength = analyser.frequencyBinCount;
+        dataArray = new Uint8Array(bufferLength);
+      }
+      drawVisualizer();
     }
 
     function drawVisualizer() {
-        requestAnimationFrame(drawVisualizer);
+      requestAnimationFrame(drawVisualizer);
 
-        if (!analyser || audio.paused) { 
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            return;
-        }
-
-        analyser.getByteFrequencyData(dataArray);
-
+      if (!analyser || audio.paused) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        currentAverageFrequency = 0;
+        return;
+      }
 
-        const barWidth = (canvas.width / bufferLength) * 2.5; 
-        let x = 0;
+      analyser.getByteFrequencyData(dataArray);
 
-        for (let i = 0; i < bufferLength; i++) {
-            const barHeight = dataArray[i] * 2; 
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const gradient = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
-            gradient.addColorStop(0, 'rgba(0, 255, 255, 0.1)'); 
-            gradient.addColorStop(0.5, 'rgba(255, 0, 255, 0.3)'); 
-            gradient.addColorStop(1, 'rgba(0, 255, 255, 0.5)'); 
+      let sum = 0;
+      for (let i = 0; i < bufferLength; i++) {
+        sum += dataArray[i];
+      }
+      let average = sum / bufferLength;
 
-            ctx.fillStyle = gradient;
-            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+      currentAverageFrequency =
+        currentAverageFrequency * 0.9 + average * 0.1;
 
-            x += barWidth + 2; 
-        }
+      const pulseStrength = currentAverageFrequency / 255;
+      const maxGlow = 100;
+      const glow = maxGlow * pulseStrength * pulseStrength;
+
+      const gradientBg = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width > canvas.height ? canvas.width / 1.5 : canvas.height / 1.5
+      );
+
+      gradientBg.addColorStop(0, `rgba(
+        ${Math.round(40 + glow * 0.5)},
+        ${Math.round(0 + glow * 0.2)},
+        ${Math.round(40 + glow * 0.5)},
+        ${0.1 + pulseStrength * 0.3}
+    )`);
+      gradientBg.addColorStop(1, `rgba(
+        ${Math.round(0 + glow * 0.1)},
+        ${Math.round(0 + glow * 0.1)},
+        ${Math.round(20 + glow * 0.1)},
+        0
+    )`);
+      ctx.fillStyle = gradientBg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = dataArray[i] * 1.5;
+
+        const barGradient = ctx.createLinearGradient(
+          0,
+          canvas.height - barHeight,
+          0,
+          canvas.height
+        );
+        barGradient.addColorStop(
+          0,
+          `rgba(
+            ${Math.round(0 + dataArray[i])},
+            ${Math.round(255 - dataArray[i])},
+            ${Math.round(255)},
+            ${0.5 + dataArray[i] / 510}
+        )`
+        );
+        barGradient.addColorStop(
+          1,
+          `rgba(
+            ${Math.round(dataArray[i] / 2)},
+            ${Math.round(0)},
+            ${Math.round(dataArray[i] / 2)},
+            ${0.1 + dataArray[i] / 765}
+        )`
+        );
+
+        ctx.fillStyle = barGradient;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+        x += barWidth + 2;
+      }
     }
 
 
     function checkAndShowControls() {
-        if (audioLoaded) { 
-            controlsDiv.classList.add("show");
-            speedControlsDiv.classList.add("show");
-        } else {
-            controlsDiv.classList.remove("show");
-            speedControlsDiv.classList.remove("show");
-            lyricsDiv.classList.remove("show"); 
-        }
+      if (audioLoaded) {
+        controlsDiv.classList.add("show");
+        speedControlsDiv.classList.add("show");
+        seekBarContainer.classList.add("show");
+      } else {
+        controlsDiv.classList.remove("show");
+        speedControlsDiv.classList.remove("show");
+        seekBarContainer.classList.remove("show");
+        lyricsDiv.classList.remove("show");
+        albumArtDiv.classList.remove("show");
+      }
     }
 
-    audioFile.addEventListener("change", function () {
+    function displaySongTitleOnDisc(title) {
+      songTitleOnDiscDiv.innerHTML = '';
+      const displayTitle = title.length > 30 ? title.substring(0, 30) + '...' : title;
+
+      const radius = albumArtDiv.offsetWidth / 2 - 20;
+      const totalAngle = Math.PI * 1.6;
+      const startAngle = (Math.PI * 2 - totalAngle) / 2;
+
+      const angIncrement = totalAngle / displayTitle.length;
+
+      for (let i = 0; i < displayTitle.length; i++) {
+        const char = displayTitle[i];
+        const span = document.createElement('span');
+        span.classList.add('song-title-char');
+        span.textContent = char;
+
+        const angle = startAngle + angIncrement * i;
+        const x = radius * Math.cos(angle - Math.PI / 2);
+        const y = radius * Math.sin(angle - Math.PI / 2);
+
+        span.style.left = `calc(50% + ${x}px)`;
+        span.style.top = `calc(50% + ${y}px)`;
+        span.style.transform = `translate(-50%, -50%) rotate(${angle * (180 / Math.PI) + 90}deg)`;
+        songTitleOnDiscDiv.appendChild(span);
+      }
+    }
+
+
+    audioFile.addEventListener("change", async function () {
       const file = this.files[0];
       if (file) {
         const url = URL.createObjectURL(file);
@@ -457,11 +778,15 @@
         audioLoaded = true;
         const fileName = file.name.split('.').slice(0, -1).join('.');
         songTitleDiv.textContent = fileName;
-        
-        lyricsDiv.innerHTML = 'Upload .lrc to see synchronized lyrics here'; 
-        lyrics = []; 
-        currentLine = -1; 
-        setupVisualizer(); 
+        displaySongTitleOnDisc(fileName);
+
+
+        lyricsDiv.innerHTML = 'Upload .lrc to see synchronized lyrics here';
+        lyrics = [];
+        currentLine = -1;
+        lrcLoaded = false;
+        currentAverageFrequency = 0;
+        setupVisualizer();
         checkAndShowControls();
       }
     });
@@ -473,8 +798,12 @@
         reader.onload = function (e) {
           parseLRC(e.target.result);
           lrcLoaded = true;
-          if (audioLoaded) { 
-            lyricsDiv.classList.add("show");
+          // When LRC is loaded, hide album art and show lyrics
+          albumArtDiv.classList.remove("show");
+          albumArtDiv.classList.remove("playing");
+          lyricsDiv.classList.add("show");
+          if (audioLoaded) {
+            displayLyricsContent();
           }
         };
         reader.readAsText(file);
@@ -485,7 +814,7 @@
       lyrics = [];
       const lines = text.split("\n");
       for (const line of lines) {
-        const match = line.match(/\[(\d{2}):(\d{2}(?:\.\d{1,3})?)\](.*)/); 
+        const match = line.match(/\[(\d{2}):(\d{2}(?:\.\d{1,3})?)\](.*)/);
         if (match) {
           const min = parseInt(match[1]);
           const sec = parseFloat(match[2]);
@@ -507,7 +836,22 @@
     }
 
     audio.addEventListener("timeupdate", function () {
-      if (!lyrics.length) return;
+      if (!lrcLoaded) { // Only show album art if LRC is NOT loaded
+        if (audioLoaded && !audio.paused) {
+          albumArtDiv.classList.add("show");
+          albumArtDiv.classList.add("playing");
+          lyricsDiv.classList.remove("show"); // Hide lyrics
+        } else if (audioLoaded && audio.paused) {
+          albumArtDiv.classList.remove("playing");
+        }
+        return;
+      } else {
+        // If lyrics are loaded, show lyrics and hide album art
+        lyricsDiv.classList.add("show");
+        albumArtDiv.classList.remove("show");
+        albumArtDiv.classList.remove("playing");
+      }
+
       const currentTime = audio.currentTime;
       let i = 0;
       while (i < lyrics.length - 1 && currentTime >= lyrics[i + 1].time - 0.1) {
@@ -531,31 +875,35 @@
       }
     });
 
-    audio.addEventListener("ended", function() {
-        const divs = lyricsDiv.querySelectorAll("div");
-        if (currentLine !== -1 && divs[currentLine]) {
-            divs[currentLine].classList.remove("highlight");
-        }
-        currentLine = -1;
-        lyricsDiv.classList.remove("show"); 
+    audio.addEventListener("ended", function () {
+      const divs = lyricsDiv.querySelectorAll("div");
+      if (currentLine !== -1 && divs[currentLine]) {
+        divs[currentLine].classList.remove("highlight");
+      }
+      currentLine = -1;
+      lyricsDiv.classList.remove("show");
+      albumArtDiv.classList.remove("playing");
+      if (!lrcLoaded) { // Only hide disc if no lrc was loaded
+        albumArtDiv.classList.remove("show");
+      }
     });
 
     function playAudio() {
       if (!audio.src) {
-        alert("Please upload an audio file first!");
+        alert("Vui lòng tải lên một tệp âm thanh trước!");
         return;
       }
-      if (isCountingDown) return; 
+      if (isCountingDown) return;
 
       isCountingDown = true;
       let count = 3;
-      
+
       countdownOverlay.classList.add("show");
-      
+
       const startCountdown = (num) => {
         countdownNumber.textContent = num;
-        countdownNumber.style.animation = 'none'; 
-        void countdownNumber.offsetWidth; 
+        countdownNumber.style.animation = 'none';
+        void countdownNumber.offsetWidth;
         countdownNumber.style.animation = 'countdownPop 1s ease-out forwards';
       };
 
@@ -571,19 +919,35 @@
         } else {
           clearInterval(countdownInterval);
           countdownOverlay.classList.remove("show");
-          isCountingDown = false; 
+          isCountingDown = false;
 
-          if (lrcLoaded) { 
-            displayLyricsContent(); 
-            lyricsDiv.classList.add("show"); 
+          if (lrcLoaded) {
+            displayLyricsContent();
+            lyricsDiv.classList.add("show");
+            albumArtDiv.classList.remove("show");
+            albumArtDiv.classList.remove("playing");
+          } else {
+            lyricsDiv.classList.remove("show");
+            albumArtDiv.classList.add("show");
+            albumArtDiv.classList.add("playing");
           }
 
-          audio.play(); 
+          if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume().then(() => {
+              audio.play();
+            });
+          } else {
+            audio.play();
+          }
+
           if (audio.currentTime === 0 && lyrics.length > 0) {
-              const divs = lyricsDiv.querySelectorAll("div");
-              divs.forEach((div) => div.classList.remove("highlight"));
-              currentLine = -1;
-              lyricsDiv.scrollTo({ top: 0, behavior: 'smooth' });
+            const divs = lyricsDiv.querySelectorAll("div");
+            divs.forEach((div) => div.classList.remove("highlight"));
+            currentLine = -1;
+            lyricsDiv.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
           }
         }
       }, 1000);
@@ -591,6 +955,7 @@
 
     function pauseAudio() {
       audio.pause();
+      albumArtDiv.classList.remove("playing");
     }
 
     function rewindAudio() {
@@ -602,17 +967,48 @@
     }
 
     function setPlaybackSpeed(speed) {
-        audio.playbackRate = speed;
-        speedButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        const activeButton = Array.from(speedButtons).find(button => parseFloat(button.textContent) === speed);
-        if (activeButton) {
-            activeButton.classList.add('active');
-        }
+      audio.playbackRate = speed;
+      speedButtons.forEach(button => {
+        button.classList.remove('active');
+      });
+      const activeButton = Array.from(speedButtons).find(button => parseFloat(button.textContent) === speed);
+      if (activeButton) {
+        activeButton.classList.add('active');
+      }
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${minutes.toString().padStart(2, "0")}:${secs
+        .toString()
+        .padStart(2, "0")}`;
     }
 
     checkAndShowControls();
+
+    audio.addEventListener("loadedmetadata", () => {
+      seekBar.max = audio.duration;
+      durationSpan.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!seekBar.changing) {
+        seekBar.value = audio.currentTime;
+      }
+      currentTimeSpan.textContent = formatTime(audio.currentTime);
+    });
+
+    seekBar.addEventListener("input", () => {
+      seekBar.changing = true;
+      currentTimeSpan.textContent = formatTime(seekBar.value);
+    });
+
+    seekBar.addEventListener("change", () => {
+      audio.currentTime = seekBar.value;
+      seekBar.changing = false;
+    });
   </script>
 </body>
+
 </html>
